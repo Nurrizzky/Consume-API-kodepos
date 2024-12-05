@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas API</title>
+     <!-- CDN CSS fastBootstrap -->
+     <link href="https://cdn.jsdelivr.net/npm/fastbootstrap@2.2.0/dist/css/fastbootstrap.min.css" rel="stylesheet" integrity="sha256-V6lu+OdYNKTKTsVFBuQsyIlDiRWiOmtC8VQ8Lzdm2i4=" crossorigin="anonymous">
+     <!-- CDN font awesome -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+     <!-- CDN Jquery -->
+     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+     <!-- CDN Js -->
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div class="container">
+        <img src="https://imgs.search.brave.com/-RGiSMIZc4VZm70wQJ_cIHHccBgix73AAHcaREBprQs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9rb2Rl/cG9zLmlkL2tvZGVw/b3MxL2tvZGVwb3Mu/aWQucG5n" alt="" class="d-block mx-auto my-10">
+        <h2 class="my-5 text-center">Data <b>Kode pos Indonesia</b> API🔥</h2>
+        <p class="text-center text-">Temukan Kode pos anda sesuai daerah anda🤩</p>
+        <div class="d-flex gap-4 align-items-center">
+            <input type="text" class="form-control" placeholder="Tulis Keyword : Kabupaten, Kota, kecamatan" id="search" required>
+            <!-- <button type="submit" class="btn btn-primary" id="btn">Cari</button> -->
+        </div>
+        <div id="wrap-card" class="d-flex flex-wrap gap-5 align-items-center justify-content-center">
+
+        </div>
+    </div>
+
+    <script>
+        $('#search').on('input', function() {
+            const search = $('#search').val();
+            $.ajax({
+                method:"GET",
+                url: "https://alamat.thecloudalert.com/api/cari/index/?keyword=" + search,
+                dataType: "json",
+                success: function (response) { 
+                    let newElement = '';
+                    let limit = 100;
+                    response.result.slice(0,limit).forEach(data => {
+                        let card = `
+                        <div class="card w-25 mt-5 rounded-3">
+                            <div class="card-body">
+                              <h5 class="card-title"> ${data.kabkota}</h5>
+                              <p class="card-text">
+                                Provinsi : <b>${data.provinsi}</b> <br>
+                                kecamatan : <b>${data.kecamatan}</b> <br>
+                                desa Kelurahan : <b>${data.desakel}</b> <br>
+                              </p>
+                            </div>
+                            <div class="card-footer text-muted bg-primary text-white shadow-lg">
+                              <b class="text-white">${data.kodepos}</b>
+                            </div>
+                        </div>
+                        `;
+                        newElement += card;
+                        $('#wrap-card').html(newElement);
+                        return;
+                    });
+                },
+                error: function(error) {
+                    alert(error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
